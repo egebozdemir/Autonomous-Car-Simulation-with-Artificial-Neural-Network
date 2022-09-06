@@ -12,8 +12,11 @@ class Car{
         this.angle=0;
         this.damaged=false;
 
+        this.useBrain=controlType=="AI";
+
         if(controlType!="DUMMY"){  // dummy trafic cars to not have sensors
             this.sensor=new Sensor(this);
+            this.brain=new NeuralNetwork([this.sensor.rayCount, 6, 4]);  // input layer: sensor number of neurons, hidden layer: 6 neurons, output layer: 4 neurons
         }
         //this.sensor=new Sensor(this);
 
@@ -28,6 +31,18 @@ class Car{
         }
         if(this.sensor){ // update the sensors if exist
             this.sensor.update(roadBorders, traffic);
+            const offsets=this.sensor.readings.map(
+                s => s == null ? 0 : 1-s.offset);  // if it's null return 0, otherwise return (1 - sensor's offset)
+
+            const outputs = NeuralNetwork.feedForward(offsets, this.brain);
+            //console.log(outputs);
+
+            if(this.useBrain){
+                this.controls.forward=outputs[0];
+                this.controls.left=outputs[1];
+                this.controls.right=outputs[2];
+                this.controls.reverse=outputs[3];
+            }
         }
         
     }
