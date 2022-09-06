@@ -1,5 +1,5 @@
 class Car{
-    constructor(x,y,width,height){
+    constructor(x, y, width, height, controlType, maxSpeed=3){
         this.x=x;
         this.y=y;
         this.width=width;
@@ -7,27 +7,39 @@ class Car{
 
         this.speed=0;
         this.acceleration=0.2;
-        this.maxspeed=3;
+        this.maxspeed=maxSpeed;
         this.friction=0.05;
         this.angle=0;
         this.damaged=false;
 
-        this.sensor=new Sensor(this);
-        this.controls=new Controls();
+        if(controlType!="DUMMY"){  // dummy trafic cars to not have sensors
+            this.sensor=new Sensor(this);
+        }
+        //this.sensor=new Sensor(this);
+
+        this.controls=new Controls(controlType);
     }
 
-    update(roadBorders){
-        if(!this.damaged){ //stop the car if collision
+    update(roadBorders, traffic){
+        if(!this.damaged){ //don't move the car if collision
             this.#move();
             this.polygon=this.#createPolygon();
-            this.damaged=this.#assessDamage(roadBorders);
+            this.damaged=this.#assessDamage(roadBorders, traffic);
         }
-        this.sensor.update(roadBorders);
+        if(this.sensor){ // update the sensors if exist
+            this.sensor.update(roadBorders, traffic);
+        }
+        
     }
 
-    #assessDamage(roadBorders){
-        for(let i=0; i<roadBorders.length; i++){
+    #assessDamage(roadBorders, traffic){
+        for(let i=0; i<roadBorders.length; i++){ // assess damage if intersect with the road borders
             if(polyIntersection(this.polygon, roadBorders[i])){
+                return true;
+            }
+        }
+        for(let i=0; i<traffic.length; i++){  // also assess damage if intersect with the traffic car's polygones
+            if(polyIntersection(this.polygon, traffic[i].polygon)){
                 return true;
             }
         }
@@ -57,7 +69,7 @@ class Car{
         return points;
     }
 
-    #move(){ // private method
+    #move(){ // private method for car drive mechanics
         if(this.controls.forward){
             this.speed+=this.acceleration;
         }
@@ -99,7 +111,7 @@ class Car{
         this.y-=this.speed;
     }
 
-    draw(ctx){
+    draw(ctx, color){
         /* ctx.save();
         ctx.translate(this.x, this.y);
         ctx.rotate(-this.angle);
@@ -113,8 +125,8 @@ class Car{
         
         if(this.damaged){ // collision: gray 
             ctx.fillStyle="gray";
-        }else{
-            ctx.fillStyle="black";
+        }else{  // color param initialized for main car traffic cars --> car.js
+            ctx.fillStyle=color;
         }
 
         ctx.beginPath();
@@ -124,7 +136,10 @@ class Car{
         }
         ctx.fill();
 
-        this.sensor.draw(ctx);
+        if(this.sensor){ // draw the sensor if exist --> for our car
+            this.sensor.draw(ctx);
+        }
+        
         
     }
 

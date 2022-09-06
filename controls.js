@@ -1,14 +1,22 @@
 class Controls{
-    constructor(){
+    constructor(type){
         this.forward=false;
         this.left=false;
         this.right=false;
         this.reverse=false;
 
-        this.#addKeyboardListeners(); // #: private method
+        switch(type){  // preventing the override of keyboard listeners for tha cars in traffic
+            case "KEYS":  // dummy cars in traffic are moving very simple compared to our key car 
+                this.#addKeyboardListeners();
+                break; 
+            case "DUMMY":
+                this.forward=true;
+                break;
+        }
+        //this.#addKeyboardListeners(); 
     }
 
-    #addKeyboardListeners(){
+    #addKeyboardListeners(){ // private method for keyboard listeners
         document.onkeydown=(event)=>{ // =>: function(event)
             switch(event.key){
                 case "ArrowLeft":

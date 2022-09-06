@@ -9,20 +9,29 @@ class Sensor{
         this.readings=[]; // readings array contains values that tells how far the border if there is any
     }
 
-    update(roadBorders){
+    update(roadBorders, traffic){
         this.#castRays();  // moved to the private method
         this.readings=[];
         for(let i=0; i<this.rays.length; i++){
-            this.readings.push(this.#getReading(this.rays[i], roadBorders));
+            this.readings.push(this.#getReading(this.rays[i], roadBorders, traffic));
         }
     }
 
-    #getReading(ray, roadBorders){
+    #getReading(ray, roadBorders, traffic){
         let touches=[];
         for(let i=0; i<roadBorders.length; i++){
-            const touch=getIntersection(ray[0], ray[1], roadBorders[i][0], roadBorders[i][1]); // getIntersection method returns intersection points and the offset (distance between them) -- in untils.js
+            const touch=getIntersection(ray[0], ray[1], roadBorders[i][0], roadBorders[i][1]); // getIntersection method returns intersection points and the offset (distance between them) --> in untils.js
             if(touch){
                 touches.push(touch);
+            }
+        }
+        for(let i=0; i<traffic.length; i++){ // intersection with polygone segments of the traffic cars included to touches
+            const poly=traffic[i].polygon;
+            for(let j=0; j<poly.length; j++){
+                const value=getIntersection(ray[0], ray[1], poly[j], poly[(j+1)%poly.length]);
+                if(value){
+                    touches.push(value);
+                }
             }
         }
         if(touches.length==0){
