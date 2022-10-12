@@ -8,16 +8,16 @@ const networkCtx = networkCanvas.getContext("2d");
 
 const road = new Road(carCanvas.width/2, carCanvas.width*0.9);
 
-const N=100;
+const N=1000;  // number of cars generated simultaneously (increase it according the hardware used for decreasing the number of trials for training)
 const cars = generateCars(N);
-let bestCar=cars[0];
+let bestCar=cars[0];  // initiliazing the best car as the first generated one 
 
 if(localStorage.getItem("bestBrain")){
     for(let i=0;i<cars.length;i++){
         cars[i].brain=JSON.parse(
             localStorage.getItem("bestBrain"));
         if(i!=0){
-            NeuralNetwork.mutate(cars[i].brain, 0.1);
+            NeuralNetwork.mutate(cars[i].brain, 0.1);  // mutating the network by an amount for adjusting the variance of the generated cars
         }
     }
 }

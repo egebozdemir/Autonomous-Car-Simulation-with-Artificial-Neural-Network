@@ -14,6 +14,20 @@ class NeuralNetwork{
         return outputs;  // return the final outputs
     }
 
+    static mutate(network,amount=1){  // mutating the network %100 (amount=1)
+        network.levels.forEach(level => {  // iterate through all the biases for each layers and linearly interpolate current value with a random value between (-1,1)
+            for(let i=0;i<level.biases.length;i++){
+                level.biases[i]=lerp(level.biases[i], Math.random()*2-1, amount)
+            }
+            for(let i=0;i<level.weights.length;i++){  // iterate through all the biases for each layers and linearly interpolate current value with a random value between (-1,1)
+                for(let j=0;j<level.weights[i].length;j++){
+                    level.weights[i][j]=lerp(level.weights[i][j], Math.random()*2-1, amount)
+                }
+            }
+        });
+    }
+
+
 
 }
 
