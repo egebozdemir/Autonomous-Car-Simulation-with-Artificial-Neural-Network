@@ -8,7 +8,7 @@ class NeuralNetwork{
 
     static feedForward(givenInputs, network){  
         let outputs=Level.feedForward(givenInputs, network.levels[0])  // calling the first level to produce it's outputs
-        for(let i=1; i<network.levels.length; i++){  //  looping through the remaining levels (i=1) 
+        for(let i=1; i<network.levels.length; i++){  // looping through the remaining levels (i=1) 
             outputs=Level.feedForward(outputs, network.levels[i]);  // putting the output of the previous level into the input of the next one and updating the output by the feedForward result
         }
         return outputs;  // return the final outputs

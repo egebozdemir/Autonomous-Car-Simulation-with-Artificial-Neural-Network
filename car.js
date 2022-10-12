@@ -123,10 +123,10 @@ class Car{
         this.x-=Math.sin(this.angle)*this.speed; // move the car in the direction of angle
         this.y-=Math.cos(this.angle)*this.speed;
 
-        this.y-=this.speed;
+        //this.y-=this.speed;
     }
 
-    draw(ctx, color){
+    draw(ctx, color, drawSensor=false){
         /* ctx.save();
         ctx.translate(this.x, this.y);
         ctx.rotate(-this.angle);
@@ -151,7 +151,7 @@ class Car{
         }
         ctx.fill();
 
-        if(this.sensor){ // draw the sensor if exist --> for our car
+        if(this.sensor && drawSensor){ // draw the sensor if exist --> for our very best car
             this.sensor.draw(ctx);
         }
         
