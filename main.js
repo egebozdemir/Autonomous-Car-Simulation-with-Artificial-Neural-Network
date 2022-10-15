@@ -17,14 +17,14 @@ if(localStorage.getItem("bestBrain")){
         cars[i].brain=JSON.parse(
             localStorage.getItem("bestBrain"));
         if(i!=0){
-            NeuralNetwork.mutate(cars[i].brain, 0.1);  // mutating the network by an amount for adjusting the variance of the generated cars
+            NeuralNetwork.mutate(cars[i].brain, 0.2);  // mutating the network by an amount for adjusting the variance of the generated cars
         }
     }
 }
 //const car = new Car(road.getLaneCenter(1),100,30,50,"AI");  // keys and dummy controlTypes included, UPDATE: our car is driven by AI 
 
 const traffic=[  // placing the traffic cars (obstacles)
-    new Car(road.getLaneCenter(1), -100, 30, 50, "DUMMY", 2),
+    new Car(road.getLaneCenter(1), -50, 30, 50, "DUMMY", 2),
     new Car(road.getLaneCenter(0), -300, 30, 50, "DUMMY", 2),
     new Car(road.getLaneCenter(2), -300, 30, 50, "DUMMY", 2),
     new Car(road.getLaneCenter(0), -500, 30, 50, "DUMMY", 2),
