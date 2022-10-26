@@ -30,7 +30,8 @@ const traffic=[  // placing the traffic cars (obstacles)
     new Car(road.getLaneCenter(0), -500, 30, 50, "DUMMY", 2),
     new Car(road.getLaneCenter(1), -500, 30, 50, "DUMMY", 2),
     new Car(road.getLaneCenter(1), -700, 30, 50, "DUMMY", 2),
-    new Car(road.getLaneCenter(2), -700, 30, 50, "DUMMY", 2)
+    new Car(road.getLaneCenter(2), -700, 30, 50, "DUMMY", 2),
+    new Car(road.getLaneCenter(2), -1000, 30, 50, "DUMMY", 2)
 ];
 /* const traffic = [  // simulating traffic by creating arrays of Car objects
     new Car(road.getLaneCenter(1),-100,30,50,"DUMMY",2) // cars in the traffic is moving slower (2) than maxSpeed=3 
